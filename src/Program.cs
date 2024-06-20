@@ -25,8 +25,11 @@ public class Program
         builder.Services.AddHealthChecks();
         var app = builder.Build();
         
-        // possible to add another configuration var to enable/disable this
-        app.UseMiddleware<AuthenticationMiddleware>(); 
+        var enableAuthentication = builder.Configuration.GetValue<bool>("EnableAuthenticationMiddleware");
+        if (enableAuthentication)
+        {
+            app.UseMiddleware<AuthenticationMiddleware>();
+        }
 
         app.MapHealthChecks("/healthz");
         app.MapReverseProxy(m =>
