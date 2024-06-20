@@ -9,6 +9,10 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        // Add Application Insights
+        builder.Services.AddApplicationInsightsTelemetry(o => o.ConnectionString = builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
+
+
         var backendConfiguration = BackendConfig.LoadConfig(builder.Configuration);
         var yarpConfiguration = new YarpConfiguration(backendConfiguration);
         builder.Services.AddSingleton<IPassiveHealthCheckPolicy, ThrottlingHealthPolicy>();
